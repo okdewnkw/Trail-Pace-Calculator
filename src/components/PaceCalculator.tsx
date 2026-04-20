@@ -242,7 +242,7 @@ export default function PaceCalculator() {
         </div>
       </header>
 
-      <main className="flex-grow max-w-[1400px] w-full mx-auto p-4 sm:p-5 grid grid-cols-1 xl:grid-cols-[1fr_400px] gap-5 items-start overflow-hidden">
+      <main className="flex-grow max-w-[1400px] w-full mx-auto p-4 sm:p-5 grid grid-cols-1 xl:grid-cols-[1fr_400px] gap-5 items-start xl:overflow-hidden">
         {!gpxData ? (
           <div className="col-span-1 lg:col-span-2 border-2 border-dashed border-slate-300 rounded-[12px] p-12 text-center bg-white flex flex-col items-center justify-center shadow-[0_1px_3px_rgba(0,0,0,0.1)] py-24">
             <Upload className="w-12 h-12 text-blue-500 mb-4" />
@@ -257,7 +257,7 @@ export default function PaceCalculator() {
         ) : (
           <>
             {/* Left Column */}
-            <div className="flex flex-col gap-5 h-full overflow-hidden">
+            <div className="flex flex-col gap-5 h-full xl:overflow-hidden">
               {isDemo && (
                 <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-[12px] p-4 flex gap-3 text-sm shrink-0 shadow-sm items-center">
                   <Info className="shrink-0 text-amber-500" size={24} />
@@ -345,7 +345,7 @@ export default function PaceCalculator() {
               )}
 
               {/* Segments Editor Table */}
-              <div className="bg-white rounded-[12px] shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col flex-grow overflow-hidden">
+              <div className="bg-white rounded-[12px] shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col flex-grow xl:overflow-hidden">
                 <div className="p-4 border-b border-[#F1F5F9] flex justify-between items-center shrink-0">
                   <div className="text-[0.875rem] font-bold uppercase tracking-[0.05em] text-[#475569]">
                     分段策略分析 {isDemo ? '(範例路線 DEMO)' : '(Based on GPX Waypoints)'}
@@ -354,8 +354,8 @@ export default function PaceCalculator() {
                     自動分析 {segments.length} 個檢查點
                   </div>
                 </div>
-                <div className="overflow-x-auto flex-grow h-0">
-                  <table className="w-full text-[0.875rem] text-left border-collapse">
+                <div className="overflow-x-auto flex-grow min-h-[300px] xl:min-h-0 xl:h-0 pb-10 xl:pb-0">
+                  <table className="w-full text-[0.875rem] text-left border-collapse min-w-[1000px]">
                     <thead className="bg-[#F8FAFC] text-[#64748B] font-semibold sticky top-0 z-10 border-b border-[#E2E8F0]">
                       <tr>
                         <th className="p-3">分段點 (CP)</th>
