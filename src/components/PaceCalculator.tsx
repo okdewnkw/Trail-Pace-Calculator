@@ -286,30 +286,30 @@ export default function PaceCalculator() {
               )}
 
               {/* Global Settings */}
-              <div className="bg-white rounded-[12px] shadow-[0_1px_3px_rgba(0,0,0,0.1)] p-4 flex flex-wrap gap-5 xl:gap-8 items-center shrink-0">
+              <div className="bg-gradient-to-r from-indigo-50/80 to-blue-50/80 border border-indigo-100/60 rounded-[12px] shadow-sm p-4 flex flex-wrap gap-5 xl:gap-8 items-center shrink-0">
                 <div className="flex items-center gap-2">
-                   <Settings size={18} className="text-slate-400" />
-                   <span className="text-[0.875rem] font-bold uppercase tracking-[0.05em] text-[#475569]">全局設定</span>
+                   <Settings size={18} className="text-indigo-500" />
+                   <span className="text-[0.875rem] font-bold uppercase tracking-[0.05em] text-indigo-900">全局設定</span>
                 </div>
                 
                 <div className="flex flex-wrap gap-5 xl:gap-8 items-center">
                   <div className="flex items-center gap-2">
-                    <span className="text-[0.8rem] text-[#64748B] font-medium whitespace-nowrap">起跑時間</span>
-                    <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} className="w-[110px] border border-[#CBD5E1] rounded px-2 py-1 text-[0.8rem] focus:ring-1 focus:ring-blue-500 outline-none" />
+                    <span className="text-[0.8rem] text-indigo-800/80 font-semibold whitespace-nowrap">起跑時間</span>
+                    <input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} className="w-[110px] bg-white border border-indigo-200/80 text-indigo-900 rounded px-2 py-1 text-[0.8rem] focus:ring-1 focus:ring-indigo-400 outline-none shadow-sm" />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[0.8rem] text-[#64748B] font-medium whitespace-nowrap">預設 EPH</span>
-                    <div className="flex text-[0.8rem]">
-                      <input type="number" step="0.5" value={globalEph} onChange={e => setGlobalEph(Number(e.target.value))} className="w-16 border border-[#CBD5E1] rounded-l px-2 py-1 focus:ring-1 focus:ring-blue-500 outline-none" />
-                      <button onClick={handleApplyGlobalEph} className="bg-blue-50 text-blue-700 border border-blue-200 border-l-0 px-3 py-1 rounded-r hover:bg-blue-100 font-semibold tracking-wide transition-colors">套用至全部</button>
+                  <div className="flex items-center gap-2 text-[0.8rem]">
+                    <span className="text-[0.8rem] text-indigo-800/80 font-semibold whitespace-nowrap">預設 EPH</span>
+                    <div className="flex shadow-sm rounded">
+                      <input type="number" step="0.5" value={globalEph} onChange={e => setGlobalEph(Number(e.target.value))} className="w-16 bg-white border border-indigo-200/80 text-indigo-900 rounded-l px-2 py-1 focus:ring-1 focus:ring-indigo-400 outline-none" />
+                      <button onClick={handleApplyGlobalEph} className="bg-indigo-100 text-indigo-700 border border-indigo-200/80 border-l-0 px-3 py-1 rounded-r hover:bg-indigo-200 font-bold tracking-wide transition-colors">套用至全部</button>
                     </div>
                   </div>
                   {gpxData.waypoints.length === 0 && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-[0.8rem] text-[#64748B] font-medium whitespace-nowrap">平均分段數</span>
-                      <div className="flex text-[0.8rem]">
-                        <input type="number" min="1" value={segmentCount} onChange={e => setSegmentCount(Number(e.target.value))} className="w-16 border border-[#CBD5E1] rounded-l px-2 py-1 focus:ring-1 focus:ring-blue-500 outline-none" />
-                        <button onClick={handleSplitEvenly} className="bg-slate-100 text-slate-700 border border-slate-200 border-l-0 px-3 py-1 rounded-r hover:bg-slate-200 flex items-center gap-1 font-semibold tracking-wide transition-colors"><RefreshCw size={12}/> 重分段</button>
+                    <div className="flex items-center gap-2 text-[0.8rem]">
+                      <span className="text-[0.8rem] text-indigo-800/80 font-semibold whitespace-nowrap">平均分段數</span>
+                      <div className="flex shadow-sm rounded">
+                        <input type="number" min="1" value={segmentCount} onChange={e => setSegmentCount(Number(e.target.value))} className="w-16 bg-white border border-indigo-200/80 text-indigo-900 rounded-l px-2 py-1 focus:ring-1 focus:ring-indigo-400 outline-none" />
+                        <button onClick={handleSplitEvenly} className="bg-white text-indigo-600 border border-indigo-200/80 border-l-0 px-3 py-1 rounded-r hover:bg-indigo-50 flex items-center gap-1 font-bold tracking-wide transition-colors"><RefreshCw size={12}/> 重分段</button>
                       </div>
                     </div>
                   )}
