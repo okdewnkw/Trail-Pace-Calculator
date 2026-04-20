@@ -189,6 +189,23 @@ export default function PaceCalculator() {
   let cumulativeAsc = 0;
   let cumulativeDesc = 0;
 
+  // Calculate totals in advance for top summary
+  let totalTimeHours = 0;
+  let totalDist = 0;
+  let totalAsc = 0;
+  let totalDesc = 0;
+  
+  segments.forEach(seg => {
+    const ep = seg.distance + (seg.ascent / 100);
+    const effectiveEph = (Number(seg.eph) || 10) * ((Number(seg.ephScale) || 100) / 100);
+    const movingHours = ep / effectiveEph;
+    const restHours = (Number(seg.restTime) || 0) / 60;
+    totalTimeHours += movingHours + restHours;
+    totalDist += seg.distance;
+    totalAsc += seg.ascent;
+    totalDesc += seg.descent;
+  });
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#1E293B] flex flex-col font-sans">
       <header className="bg-white border-b border-[#E2E8F0] px-6 py-3 flex justify-between items-center shrink-0">
@@ -298,6 +315,34 @@ export default function PaceCalculator() {
                   )}
                 </div>
               </div>
+
+              {/* Summary Bar */}
+              {gpxData && (
+                <div className="bg-[#1E293B] text-white rounded-[12px] px-6 py-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.1)] shrink-0 overflow-x-auto gap-8">
+                  <div className="flex gap-10">
+                    <div className="flex flex-col">
+                      <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總距離</span>
+                      <span className="text-[1.125rem] font-bold">{totalDist.toFixed(1)} km</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總爬升 / 下降</span>
+                      <span className="text-[1.125rem] font-bold">+{totalAsc.toFixed(0)}m / -{totalDesc.toFixed(0)}m</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總休息時間</span>
+                      <span className="text-[1.125rem] font-bold">{segments.reduce((acc, s) => acc + (Number(s.restTime) || 0), 0)} min</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總體 EPH (含休)</span>
+                      <span className="text-[1.125rem] font-bold text-indigo-400">{(totalTimeHours > 0 ? ((totalDist + totalAsc/100) / totalTimeHours) : 0).toFixed(1)}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col text-right ml-auto">
+                    <span className="text-[0.7rem] text-blue-400 uppercase tracking-wider font-semibold">預估完賽時間 (EFT)</span>
+                    <span className="text-2xl font-black text-blue-400">{formatTime(totalTimeHours)}</span>
+                  </div>
+                </div>
+              )}
 
               {/* Segments Editor Table */}
               <div className="bg-white rounded-[12px] shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col flex-grow overflow-hidden">
@@ -481,12 +526,12 @@ export default function PaceCalculator() {
                       <h3 className="font-bold text-lg tracking-wider mb-2">Trail Pace Plan</h3>
                       <div className="flex justify-between items-end">
                         <div className="text-xs opacity-90 flex gap-4">
-                          <div className="flex flex-col"><span className="text-[10px] text-slate-400">總距離</span><span className="font-bold text-sm tracking-wide">{cumulativeDist.toFixed(1)}k</span></div>
-                          <div className="flex flex-col"><span className="text-[10px] text-slate-400">總爬降</span><span className="font-bold text-sm tracking-wide text-amber-400">+{cumulativeAsc.toFixed(0)}</span></div>
+                          <div className="flex flex-col"><span className="text-[10px] text-slate-400">總距離</span><span className="font-bold text-sm tracking-wide">{totalDist.toFixed(1)}k</span></div>
+                          <div className="flex flex-col"><span className="text-[10px] text-slate-400">總爬升</span><span className="font-bold text-sm tracking-wide text-amber-400">+{totalAsc.toFixed(0)}</span></div>
                         </div>
                         <div className="text-right">
                           <div className="text-[10px] text-blue-300 font-bold mb-0.5">預計完賽 (EFT)</div>
-                          <div className="font-bold text-lg leading-none text-blue-400">{formatTime(cumulativeTimeHours)}</div>
+                          <div className="font-bold text-lg leading-none text-blue-400">{formatTime(totalTimeHours)}</div>
                         </div>
                       </div>
                     </div>
@@ -568,34 +613,6 @@ export default function PaceCalculator() {
           </>
         )}
       </main>
-
-      {/* Summary Footer */}
-      {gpxData && (
-        <div className="bg-[#1E293B] text-white px-6 py-4 flex items-center justify-between shadow-lg shrink-0 overflow-x-auto gap-8">
-          <div className="flex gap-10">
-            <div className="flex flex-col">
-              <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總距離</span>
-              <span className="text-[1.125rem] font-bold">{cumulativeDist.toFixed(1)} km</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總爬升 / 下降</span>
-              <span className="text-[1.125rem] font-bold">+{cumulativeAsc.toFixed(0)}m / -{cumulativeDesc.toFixed(0)}m</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總休息時間</span>
-              <span className="text-[1.125rem] font-bold">{segments.reduce((acc, s) => acc + (Number(s.restTime) || 0), 0)} min</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[0.7rem] text-slate-400 uppercase tracking-wider font-semibold">總體 EPH (含休)</span>
-              <span className="text-[1.125rem] font-bold text-indigo-400">{(cumulativeTimeHours > 0 ? ((cumulativeDist + cumulativeAsc/100) / cumulativeTimeHours) : 0).toFixed(1)}</span>
-            </div>
-          </div>
-          <div className="flex flex-col text-right ml-auto">
-            <span className="text-[0.7rem] text-blue-400 uppercase tracking-wider font-semibold">預估完賽時間 (EFT)</span>
-            <span className="text-2xl font-black text-blue-400">{formatTime(cumulativeTimeHours)}</span>
-          </div>
-        </div>
-      )}
 
       {/* Help Modal */}
       {showHelp && (
