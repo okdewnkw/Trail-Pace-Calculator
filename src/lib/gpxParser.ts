@@ -164,6 +164,7 @@ export interface Segment {
   eph: number;
   ephScale: number; // percentage weighting, default 100
   restTime: number; // minutes
+  note?: string; // remark or note
 }
 
 export function extractSegmentsFromWaypoints(gpxData: GpxData, defaultEph: number = 10): Segment[] {
