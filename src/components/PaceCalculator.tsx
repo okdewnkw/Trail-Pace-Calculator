@@ -366,7 +366,7 @@ export default function PaceCalculator() {
                         <th className="p-3 text-right">EP 負荷</th>
                         <th className="p-3">設定 EPH</th>
                         <th className="p-3">加權(%)</th>
-                        <th className="p-3 text-right">展示 VAM</th>
+                        <th className="p-3">備註</th>
                         <th className="p-3">休(分)</th>
                         <th className="p-3 text-right whitespace-nowrap">累積時間</th>
                         <th className="p-3 text-right whitespace-nowrap">預估抵達時間</th>
@@ -388,7 +388,7 @@ export default function PaceCalculator() {
                         <td className="p-3 text-right text-slate-400">-</td>
                         <td className="p-3 text-center text-slate-400">-</td>
                         <td className="p-3 text-center text-slate-400">-</td>
-                        <td className="p-3 text-right text-slate-400">-</td>
+                        <td className="p-3 text-center text-slate-400">-</td>
                         <td className="p-3 text-center text-slate-400">-</td>
                         <td className="p-3 text-right text-slate-400">-</td>
                         <td className="p-3 text-right font-bold text-slate-800">{startTime}</td>
@@ -400,7 +400,6 @@ export default function PaceCalculator() {
                         const movingHours = ep / effectiveEph;
                         const restHours = (Number(seg.restTime) || 0) / 60;
                         const segmentTotalHours = movingHours + restHours;
-                        const calcVam = movingHours > 0 ? (seg.ascent / movingHours) : 0;
                         
                         cumulativeTimeHours += segmentTotalHours;
                         cumulativeDist += seg.distance;
@@ -457,12 +456,14 @@ export default function PaceCalculator() {
                                 className="w-[60px] rounded border border-[#CBD5E1] px-2 py-1 text-[0.75rem] text-purple-700 font-bold focus:ring-1 focus:ring-blue-500"
                               />
                             </td>
-                            <td className="p-3 text-right">
-                              {seg.ascent > 10 ? (
-                                <span className="text-rose-600 font-bold" title="根據目前 EPH 與加權推算的等效爬升速率">{Math.round(calcVam)}</span>
-                              ) : (
-                                <span className="text-slate-300">-</span>
-                              )}
+                            <td className="p-3">
+                              <input 
+                                type="text" 
+                                placeholder="筆記..."
+                                value={seg.note || ''}
+                                onChange={(e) => handleSegmentChange(idx, 'note', e.target.value)}
+                                className="w-16 sm:w-24 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none text-[0.8rem]"
+                              />
                             </td>
                             <td className="p-3">
                               <input 
@@ -475,7 +476,7 @@ export default function PaceCalculator() {
                             </td>
                             <td className="p-3 text-right text-slate-500 font-medium">{formatTime(cumulativeTimeHours)}</td>
                             <td className="p-3 text-right font-bold text-slate-800">{addHoursToTimeStr(startTime, cumulativeTimeHours)}</td>
-                            <td className="p-3 text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <td className="p-3 text-center">
                               <div className="flex justify-center gap-1">
                                 <button onClick={() => handleMoveSegment(idx, -1)} disabled={idx === 0} title="上移" className="p-1 px-1.5 text-slate-400 hover:text-blue-600 disabled:opacity-30 disabled:hover:text-slate-400 rounded">
                                   <ArrowUp size={15} />
