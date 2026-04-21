@@ -211,13 +211,7 @@ export default function PaceCalculator() {
       <header className="bg-white border-b border-[#E2E8F0] px-6 py-3 flex justify-between items-center shrink-0">
         <div className="flex items-center text-xl font-extrabold text-blue-600 tracking-tight">
           TrailPacer<span className="font-normal text-slate-500 ml-1.5 text-lg">Pro</span>
-          {fileName && !isDemo ? (
-            <span className="font-normal text-slate-400 ml-2 text-base border-l border-slate-300 pl-2 truncate max-w-[200px] md:max-w-[400px]" title={fileName}>
-              {fileName}
-            </span>
-          ) : (
-            <span className="font-normal text-slate-500 ml-1.5 text-lg hidden sm:inline">/ 越野策略分析</span>
-          )}
+          <span className="font-normal text-slate-500 ml-1.5 text-lg hidden sm:inline">/ 越野策略分析</span>
         </div>
         <div className="flex gap-3">
           <button 
@@ -347,8 +341,17 @@ export default function PaceCalculator() {
               {/* Segments Editor Table */}
               <div className="bg-white rounded-[12px] shadow-[0_1px_3px_rgba(0,0,0,0.1)] flex flex-col flex-grow xl:overflow-hidden">
                 <div className="p-4 border-b border-[#F1F5F9] flex justify-between items-center shrink-0">
-                  <div className="text-[0.875rem] font-bold uppercase tracking-[0.05em] text-[#475569]">
-                    分段策略分析 {isDemo ? '(範例路線 DEMO)' : '(Based on GPX Waypoints)'}
+                  <div className="flex items-center gap-3">
+                    <div className="text-[0.875rem] font-bold uppercase tracking-[0.05em] text-[#475569]">
+                      分段策略分析
+                    </div>
+                    {isDemo ? (
+                      <span className="text-[0.75rem] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-semibold">範例路線 DEMO</span>
+                    ) : fileName ? (
+                      <span className="text-[0.75rem] bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded truncate max-w-[150px] sm:max-w-[300px]" title={fileName}>
+                        {fileName}
+                      </span>
+                    ) : null}
                   </div>
                   <div className="text-[0.75rem] text-slate-500">
                     自動分析 {segments.length} 個檢查點
